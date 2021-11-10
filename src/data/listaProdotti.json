@@ -1,0 +1,19 @@
+{
+    "prodotti": [
+        {
+            "nome": "Birra Moretti 33 cl",
+            "prezzo": 4,
+            "prezzo_soci": 3
+        },
+        {
+            "nome": "Tassoni",
+            "prezzo": 2,
+            "prezzo_soci": 1
+        },
+        {
+            "nome": "Acqua",
+            "prezzo": 1,
+            "prezzo_soci": 0.5
+        }
+    ]
+}
