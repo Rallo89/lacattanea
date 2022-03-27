@@ -1,5 +1,4 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
 import { Route, Redirect } from 'react-router-dom'
 

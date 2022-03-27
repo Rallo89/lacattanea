@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { addToCart } from './actions/cartActions'
 
  class Products extends Component{
+
+    handleClick = (id)=>{
+        this.props.addToCart(id); 
+    }
 
     render(){
         let itemList = this.props.items.map(item=>{
@@ -9,7 +14,11 @@ import { connect } from 'react-redux'
                 <div className="card" key={item.id}>
                     <div className="card-image">
                         <span className="card-title">{item.title}</span>
-                        <span to="/" className="btn-floating halfway-fab waves-effect waves-light red"><i className="material-icons">+</i></span>
+                        <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => {
+                                console.log('onClick')
+                                this.handleClick(item.id)
+                            }
+                            }><i className="material-icons">+</i></span>
                     </div>
 
                     <div className="card-content">
@@ -33,6 +42,12 @@ const mapStateToProps = (state)=>{
     return {
       items: state.items
     }
-  }
+}
 
-export default connect(mapStateToProps)(Products)
+const mapDispatchToProps = (dispatch)=>{
+    return {
+        addToCart: (id) => {dispatch(addToCart(id))}
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products)

@@ -1,49 +1,56 @@
 import React, { Component } from "react";
 import './App.css';
-import './Components/materialize.min.css'
-import Header from "./Components/Header";
-import Products from "./Components/Products";
-import Signup from "./Components/Signup";
-import Login from "./Components/Login";
-import Dashboard from "./Components/Dashboard";
+import './components/materialize.min.css'
+import Navbar from "./components/Navigationbar";
+import Products from "./components/Products";
+import Cart from "./components/Cart";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Home from "./components/Home";
 import { AuthProvider } from "./context/AuthContext";
 import { Container } from 'react-bootstrap'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import PrivateRoute from "./Components/PrivateRoute";
-
-
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Header/>
-        <Products/>
-      </div>
-    );
-  }
-}
+import PrivateRoute from "./components/PrivateRoute";
+import Navigationbar from "./components/Navigationbar";
 
 /**
 class App extends Component {
   render() {
     return (
-      <Container className='d-flex align-items-center justify-content-center' style={{ minHeight: '100vh' }}>
-        <div className='w-100' style={{ maxWidth: '400px' }}>
+      <Router>
+        <div className="App">
+          <Header/>
+          <Switch>
+            <Route exact path="/" component={Products}/>
+            <Route path="/cart" component={Cart}/>
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
+}
+ */
+
+
+class App extends Component {
+  render() {
+    return (
+        <div className="App">
           <Router>
             <AuthProvider>
+              <Navigationbar />
               <Switch>
-                <PrivateRoute exact path='/' component={Dashboard} />
+                <PrivateRoute exact path='/' component={Home} />
                 <Route path='/signup' component={Signup} />
                 <Route path='/login' component={Login} />
               </Switch>
             </AuthProvider>
           </Router>
         </div>
-      </Container>
     );
   }
 }
-*/
+
 export default App;
 
 /**
