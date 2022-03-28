@@ -8,7 +8,6 @@ function Poll(){
     const [voteData, setVoteData] = useState();
     const [users, setUsers] = useState([]);
     const [totalVotes, setTotalVotes] = useState(0);
-    const [voted, setVoted] = useState(false);
 
     const url = "http://localhost:5001/pollItem?pollId=SITO_CATTANEA";
     
@@ -29,19 +28,14 @@ function Poll(){
 
     const submitVote = (e) => {
         console.log('event.currentTarget.dataset.id', e.currentTarget.dataset.id);
-        if(voted === false){
+        if(!users.includes(currentUser.email)){
             users.push(currentUser.email);
-            console.log(users);
             const voteSelected = e.currentTarget.dataset.id;
-            console.log(e.target.dataset.id);
-            console.log(voteData);
             const voteCurrent = voteData[voteSelected].voted;
             voteData[voteSelected].voted = voteCurrent + 1;
             setTotalVotes(totalVotes + 1);
-            setVoted(!voted);
             data["Item"]["options"] = voteData;
             data["Item"]["usersPoll"] = users;
-            console.log(data);
             const options = {
                 method: "POST",
                 body: JSON.stringify(data),
@@ -70,7 +64,7 @@ function Poll(){
     return (
         <div className="poll">
           <h1>Which option do you like the best?</h1>
-          <ul className={voted ? "results" : "options"}>
+          <ul className={"options"}>
             {pollOptions}
           </ul>
           <p>Total Votes: {totalVotes}</p>
