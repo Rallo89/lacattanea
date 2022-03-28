@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import './App.css';
-import './components/materialize.min.css'
-import Navbar from "./components/Navigationbar";
-import Products from "./components/Products";
-import Cart from "./components/Cart";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import Home from "./components/Home";
+import './Components/materialize.min.css'
+import Signup from "./Components/Signup";
+import Login from "./Components/Login";
+import Home from "./Components/Home";
 import { AuthProvider } from "./context/AuthContext";
-import { Container } from 'react-bootstrap'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import PrivateRoute from "./components/PrivateRoute";
-import Navigationbar from "./components/Navigationbar";
+import PrivateRoute from "./Components/PrivateRoute";
+import Navigationbar from "./Components/Navigationbar";
 
 /**
 class App extends Component {

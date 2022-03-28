@@ -1,41 +1,53 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from '../context/AuthContext'
 import "./Poll.css";
 
 function Poll(){
+    const {currentUser} = useAuth();
+    const [data, setData] = useState();
     const [voteData, setVoteData] = useState();
+    const [users, setUsers] = useState([]);
     const [totalVotes, setTotalVotes] = useState(0);
     const [voted, setVoted] = useState(false);
 
-    const url = "https://328r96to88.execute-api.eu-central-1.amazonaws.com/production/pollItem?pollId=SITO_CATTANEA";
+    const url = "http://localhost:5001/pollItem?pollId=SITO_CATTANEA";
+    
     useEffect(() => {
         fetch(url)
         .then((response) => response.json())
         .then((data) => {
-            setVoteData(data);
+            setVoteData(data["Item"]["options"]);
+            setUsers(data["Item"]["usersPoll"]);
+            setData(data);
             let sum = 0;
-            data.forEach(function (obj){
+            data["Item"]["options"].forEach(function (obj){
                 sum += obj.voted;
             });
             setTotalVotes(sum);
         });
     }, []);
 
-    console.log(totalVotes);
-
     const submitVote = (e) => {
+        console.log('event.currentTarget.dataset.id', e.currentTarget.dataset.id);
         if(voted === false){
-            const voteSelected = e.target.dataset.id;
-            const voteCurrent = voteData[voteSelected].votes;
-            voteData[voteSelected].votes = voteCurrent + 1;
+            users.push(currentUser.email);
+            console.log(users);
+            const voteSelected = e.currentTarget.dataset.id;
+            console.log(e.target.dataset.id);
+            console.log(voteData);
+            const voteCurrent = voteData[voteSelected].voted;
+            voteData[voteSelected].voted = voteCurrent + 1;
             setTotalVotes(totalVotes + 1);
             setVoted(!voted);
+            data["Item"]["options"] = voteData;
+            data["Item"]["usersPoll"] = users;
+            console.log(data);
             const options = {
                 method: "POST",
-                body: JSON.stringify(voteData),
+                body: JSON.stringify(data),
                 headers: { "Content-Type": "application/json"},
             };
             fetch(url, options)
-                .then((res) => res.json())
                 .then((res) => console.log(res));
         }
     };
@@ -46,7 +58,7 @@ function Poll(){
         pollOptions = voteData.map((item) => {
             return (
                 <li key={item.value}>
-                    <button onClick={submitVote} data-id={item.value}>
+                    <button onClick={submitVote} data-id={item.id}>
                     {item.value}
                     <span>- {item.voted} Votes</span>
                     </button>          
