@@ -1,25 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 import { Button } from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
 import logoHome from '../images/Giulio_home_page.jpeg'
-import Poll from "./Poll";
 
 export default function Homes(){
+
+    const [name, setName] = useState();
+    const [surname, setSurname] = useState([]);
     const { logout, currentUser } = useAuth()
+    const url = "http://localhost:5001/user?username="+currentUser.email;
+
+    useEffect(() => {
+        fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            setName(data["Item"]["nome"]);
+            setSurname(data["Item"]["cognome"]);
+        });
+    }, []);
 
     async function handleLogout(){
         try{
             await logout()
         } catch {
-            console('erorrrrroror')
+            console('Error during logout')
         }
     }
 
     return(
         <div>
             <br />
-            <h2>Benvenuto {currentUser && currentUser.email}</h2>
-            <Poll />
+            <h2>Benvenuto {name} {surname}</h2>
+            <p><img src={logoHome} alt="loading..." /></p>
             <p>
                 <Button variant='link' onClick={handleLogout}>Log out</Button>
             </p>
@@ -27,4 +40,4 @@ export default function Homes(){
     )
 }
 
-//<p><img src={logoHome} alt="loading..." /></p>
+<p><img src={logoHome} alt="loading..." /></p>
